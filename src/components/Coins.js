@@ -1,12 +1,11 @@
 import React from "react"
+import Pagination from "./Pagination"
 
 export default function Coins(props) {
     let items = []
 
     if (props.isFetch) {
         items = props.coins.map((coin) => {
-            console.log(typeof coin.current_price)
-
             let coinPrice
             if (coin.current_price && coin.current_price > 1) {
                 coinPrice = coin.current_price.toLocaleString("en-US")
@@ -79,6 +78,12 @@ export default function Coins(props) {
                 </thead>
                 <tbody>{items}</tbody>
             </table>
+            <Pagination
+                handleButtonChange={props.handleButtonChange}
+                page={props.page}
+                firstPage={props.firstPage}
+                lastPage={props.lastPage}
+            />
         </div>
     )
 }

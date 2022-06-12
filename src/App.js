@@ -5,8 +5,10 @@ function App() {
     const [coins, setCoins] = useState()
     const [isFetch, setIsFetch] = useState(false)
     const [options, setOptions] = useState({
-        page: "13",
+        page: 1,
     })
+    const firstPage = 1
+    const lastPage = 135
 
     useEffect(() => {
         axios
@@ -16,15 +18,34 @@ function App() {
             .then((res) => {
                 setCoins(res.data)
                 setIsFetch(true)
+                window.scrollTo(0, 0)
             })
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }, [options.page])
 
+    function handleButtonChange(event) {
+        console.log("click")
+        const { name, value } = event.target
+        setOptions((prevOptData) => {
+            return {
+                ...prevOptData,
+                [name]: value,
+            }
+        })
+    }
+    console.log(options.page)
     return (
         <div className="App">
-            <Coins isFetch={isFetch} coins={coins} />
+            <Coins
+                isFetch={isFetch}
+                coins={coins}
+                handleButtonChange={handleButtonChange}
+                page={options.page}
+                firstPage={firstPage}
+                lastPage={lastPage}
+            />
         </div>
     )
 }
