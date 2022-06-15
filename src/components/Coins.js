@@ -23,7 +23,7 @@ export default function Coins(props) {
                     </td>
                     <td>
                         {/* {coin.current_price ? coin.current_price : "Unknown"} */}
-                        {coinPrice}
+                        {coinPrice !== "Unknown" ? "$" + coinPrice : coinPrice}
                     </td>
                     <td>
                         {coin.price_change_percentage_24h
@@ -67,13 +67,33 @@ export default function Coins(props) {
             <table>
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>24h %</th>
-                        <th>Market Cap</th>
-                        <th>Max Supply</th>
-                        <th>Circulating Supply</th>
+                        <th onClick={() => props.sortCoins("market_cap_rank")}>
+                            #
+                        </th>
+                        <th onClick={() => props.sortCoins("name")}>Name</th>
+                        <th onClick={() => props.sortCoins("current_price")}>
+                            Price
+                        </th>
+                        <th
+                            onClick={() =>
+                                props.sortCoins("price_change_percentage_24h")
+                            }
+                        >
+                            24h %
+                        </th>
+                        <th onClick={() => props.sortCoins("market_cap")}>
+                            Market Cap
+                        </th>
+                        <th onClick={() => props.sortCoins("max_supply")}>
+                            Max Supply
+                        </th>
+                        <th
+                            onClick={() =>
+                                props.sortCoins("circulating_supply")
+                            }
+                        >
+                            Circulating Supply
+                        </th>
                     </tr>
                 </thead>
                 <tbody>{items}</tbody>

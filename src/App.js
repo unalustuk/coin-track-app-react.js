@@ -7,9 +7,14 @@ function App() {
     const [options, setOptions] = useState({
         page: 1,
     })
+    const [order, setOrder] = useState({
+        orderby: "DSC",
+        column: "market_cap_rank",
+    })
     const firstPage = 1
-    const lastPage = 135
+    const lastPage = 39
 
+    // api call
     useEffect(() => {
         axios
             .get(
@@ -35,7 +40,69 @@ function App() {
             }
         })
     }
-    console.log(options.page)
+    //  sorting table
+    function sortCoins(column) {
+        if (order.column !== column && order.orderby !== "DSC") {
+            const sortedCoins = [...coins].sort((a, b) => {
+                if (column === "name") {
+                    return a[column].toLowerCase() < b[column].toLowerCase()
+                        ? 1
+                        : -1
+                } else {
+                    return a[column] < b[column] ? 1 : -1
+                }
+            })
+            setCoins(sortedCoins)
+            setOrder((prevState) => {
+                return {
+                    ...prevState,
+                    orderby: "ASC",
+                    column: column,
+                }
+            })
+        } else {
+            if (order.orderby === "ASC") {
+                const sortedCoins = [...coins].sort((a, b) => {
+                    if (column === "name") {
+                        return a[column].toLowerCase() > b[column].toLowerCase()
+                            ? 1
+                            : -1
+                    } else {
+                        return a[column] > b[column] ? 1 : -1
+                    }
+                })
+                setCoins(sortedCoins)
+                setOrder((prevState) => {
+                    return {
+                        ...prevState,
+                        orderby: "DSC",
+                        column: column,
+                    }
+                })
+            }
+
+            if (order.orderby === "DSC") {
+                const sortedCoins = [...coins].sort((a, b) => {
+                    if (column === "name") {
+                        return a[column].toLowerCase() < b[column].toLowerCase()
+                            ? 1
+                            : -1
+                    } else {
+                        return a[column] < b[column] ? 1 : -1
+                    }
+                })
+                setCoins(sortedCoins)
+                setOrder((prevState) => {
+                    return {
+                        ...prevState,
+                        orderby: "ASC",
+                        column: column,
+                    }
+                })
+            }
+        }
+    }
+
     return (
         <div className="App">
             <Coins
@@ -45,6 +112,7 @@ function App() {
                 page={options.page}
                 firstPage={firstPage}
                 lastPage={lastPage}
+                sortCoins={sortCoins}
             />
         </div>
     )
